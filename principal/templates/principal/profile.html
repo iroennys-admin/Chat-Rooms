@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="profile">
+  <div class="profile__avatar">
+    <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+  </div>
+  <div class="profile__info">
+    <h2>{{ user.username }}</h2>
+    <p>@{{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Member since: {{ user.date_joined|date:"d/m/Y" }}</p>
+  </div>
+</div>
+
+<div class="rooms">
+  <h3> {{ user.username }}/ Rooms</h3>
+  {% for room in rooms %}
+    <div class="room">
+      <a href="{% url 'room' room.id %}">{{ room.name }}</a>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <p>Are you sure you want to delete '{{ obj }}'?</p>
+
+        <a href="javascript:history.go(-1)">Go back</a>
+    </body>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Confirm">
+        </form>
+    </form>
+
+
+
+</html>

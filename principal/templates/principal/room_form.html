@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>Create Room</title>
+</head>
+
+
+<body>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear</button>
+
+        
+    </form>
+
+
+
+
+</body>
+</html>
+{% endblock %}
