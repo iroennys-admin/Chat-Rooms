@@ -32,8 +32,20 @@ python manage.py runserver
 ## Tecnologías
 
 - Django 6.0
-- SQLite
+- PostgreSQL (producción) / SQLite (local)
 - CSS vanilla con tema oscuro
+
+## Deploy en Render
+
+La app ya trae `render.yaml` configurado. Para desplegarla:
+
+1. Ve a [render.com](https://render.com) y crea una cuenta con GitHub
+2. Click **New +** → **Blueprint**
+3. Conecta el repo `Chat-Rooms`
+4. Render lee el `render.yaml` solo y crea:
+   - El servicio web 🖥️
+   - La base de datos PostgreSQL 🗄️
+5. En 2-3 minutos la app ya está en `https://chat-rooms.onrender.com`
 
 ## Modelos
 
