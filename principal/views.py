@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import RoomForm
 from django.db.models import Count
 
+
 def registro(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -16,7 +17,6 @@ def registro(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/registro.html', {'form': form})
-
 
 def home(request):
     q = request.GET.get('q', '')
