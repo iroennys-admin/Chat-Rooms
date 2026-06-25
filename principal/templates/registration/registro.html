@@ -1,19 +1,56 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            Registrarse
-        </title>
-    </head>
-    <body>
-        
-        <h1>Registrarse</h1>
+{% extends 'main.html' %}
 
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Registrarse</button>
+{% block title %}Registrarse · ChatRooms{% endblock %}
 
-    
-    </body>
-</html>
+{% block content %}
+<div class="auth layout">
+    <div class="container">
+        <div class="layout__box">
+            <div class="layout__boxHeader">
+                <div class="layout__boxTitle">
+                    <h3>Crear cuenta</h3>
+                </div>
+            </div>
+            <div class="layout__body">
+                <form method="POST" class="form">
+                    {% csrf_token %}
+
+                    <div class="form__group">
+                        <label for="id_username">Nombre de usuario</label>
+                        <input type="text" name="username" id="id_username" maxlength="150" placeholder="Elige un usuario..." required />
+                        <small style="color:var(--color-gray);">150 caracteres o menos. Letras, dígitos y @/./+/-/_</small>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="id_password1">Contraseña</label>
+                        <input type="password" name="password1" id="id_password1" placeholder="••••••••" required />
+                        <small style="color:var(--color-gray);">Mínimo 8 caracteres, no puede ser solo numérica</small>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="id_password2">Confirmar contraseña</label>
+                        <input type="password" name="password2" id="id_password2" placeholder="Repite la contraseña..." required />
+                    </div>
+
+                    {% if form.errors %}
+                    <div style="color:var(--color-error);margin-bottom:1rem;font-size:1.4rem;">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                            <p>⚠️ {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form__action" style="justify-content:center;">
+                        <button type="submit" class="btn btn--main">Registrarse</button>
+                    </div>
+                </form>
+                <div class="auth__action">
+                    <p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

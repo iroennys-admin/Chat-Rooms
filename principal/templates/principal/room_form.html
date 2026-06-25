@@ -1,28 +1,52 @@
 {% extends 'main.html' %}
 
+{% block title %}{{ titulo }} · ChatRooms{% endblock %}
+
 {% block content %}
-<!DOCTYPE html>
-<html>
+<div class="create-room layout">
+    <div class="container">
+        <div class="layout__box">
+            <div class="layout__boxHeader">
+                <div class="layout__boxTitle">
+                    <a href="{% url 'home' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                        </svg>
+                    </a>
+                    <h3>{{ titulo }}</h3>
+                </div>
+            </div>
+            <div class="layout__body">
+                <form method="POST" class="form">
+                    {% csrf_token %}
 
+                    <div class="form__group">
+                        <label for="room_name">Nombre de la sala</label>
+                        {{ form.name }}
+                    </div>
 
-<head>
-    <title>Create Room</title>
-</head>
+                    <div class="form__group">
+                        <label for="room_topic">Tema</label>
+                        <input type="text" name="topic_input" list="topic-list" value="{{ form.instance.topic.name|default:'' }}" />
+                        <datalist id="topic-list">
+                            {% for topic in topics %}
+                            <option value="{{ topic.name }}">{{ topic.name }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
 
+                    <div class="form__group">
+                        <label for="room_description">Descripción</label>
+                        {{ form.description }}
+                    </div>
 
-<body>
-
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear</button>
-
-        
-    </form>
-
-
-
-
-</body>
-</html>
+                    <div class="form__action">
+                        <a href="{% url 'home' %}" class="btn btn--dark">Cancelar</a>
+                        <button type="submit" class="btn btn--main">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

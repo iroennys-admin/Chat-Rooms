@@ -1,71 +1,34 @@
-    <header class="header header--loggedIn">
-      <div class="container">
+<header class="header header--loggedIn">
+    <div class="container">
         <a href="{% url 'home' %}" class="header__logo">
-          <h1>ChatRooms</h1>
+            <h1>💬 ChatRooms</h1>
         </a>
         <form class="header__search" method="GET" action="{% url 'home' %}">
-          <label>
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>search</title>
-              <path
-                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"
-              ></path>
-            </svg>
-            <input name = "q" placeholder="Search for rooms..." />
-          </label>
+            <label>
+                <svg version="1.1" width="32" height="32" viewBox="0 0 32 32">
+                    <title>buscar</title>
+                    <path d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z"/>
+                </svg>
+                <input name="q" placeholder="Buscar salas..." />
+            </label>
         </form>
         <nav class="header__menu">
-        
-
-          <!-- Logged In -->
-          {% if request.user.is_authenticated %}  
-          <div class="header__user">
-            <a href="{% url 'user-profile' request.user.username %}">
-              <div class="avatar avatar--medium active">
-                <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-              </div>
-              <p>{{request.user.username}} <span>@{{request.user.username}}<span></p>
-            </a>
-            
             {% if request.user.is_authenticated %}
-
-<form method="POST" action="/logout/">
-             {% csrf_token %}
-            <button type="submit">Cerrar sesion</button>
- </form>   
-{% else %}  
-    <a href="{% url 'login' %}">Login</a>
-{% endif %}
-          </div>
-          {% else %}
-
-          <!-- Not Logged In -->
-          <a href="{% url 'login' %}">
-            <img src="./assets/avatar.svg" />
-            <p>Login</p>
-          </a>
-          {% endif %}
-
-         
-            
-            
-                
-
-
-
-
-          </div>
+            <div class="header__user">
+                <a href="{% url 'user-profile' request.user.username %}">
+                    <div class="avatar avatar--medium active">
+                        <div class="avatar__initials">{{ request.user.username|first|upper }}</div>
+                    </div>
+                    <p>{{ request.user.username }} <span>@{{ request.user.username }}</span></p>
+                </a>
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--link">Cerrar sesión</button>
+                </form>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn--main">Iniciar sesión</a>
+            {% endif %}
         </nav>
-      </div>
-    </header>
-
-
-
-
-
-
-
-
-
-
-
+    </div>
+</header>

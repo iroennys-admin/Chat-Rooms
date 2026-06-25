@@ -1,64 +1,109 @@
 {% extends 'main.html' %}
 
+{% block title %}{{ room.name }} · ChatRooms{% endblock %}
+
 {% block content %}
-<style>
-    .room-container {
-        display: grid;
-        grid-template-columns: 3fr 1fr;
-    }
-</style>
-<div class='room-container'>
+<div class="layout layout--2">
+    <div class="container">
+        <div class="room">
 
-    <div>
+            <div class="room__top">
+                <div class="room__topLeft">
+                    <a href="{% url 'home' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                        </svg>
+                    </a>
+                    <h3>{{ room.name }}</h3>
+                </div>
+                <div class="room__topRight">
+                    {% if request.user == room.host %}
+                    <a href="{% url 'edit-room' room.id %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                    </a>
+                    <a href="{% url 'delete-room' room.id %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
 
-    
-
-
-        <h1>{{room.name}}</h1>
-
-        <p>{{ room.description }}</p>
-
-
-        <div class="comment-wrapper">
-            <h3>Conversation</h3>
-            <hr>
-        </div>
-            {% for message in room_messages %}
-                <div>
-                    {% if request.user == message.user %}
-                    <a href="{% url 'delete-message' message.id %}">Delete</a>
-                    {% endif%}
-                    <small>@{{message.user}} {{message.created|timesince}} ago </small>
-                    <p>{{ message.body }}</p>
+            <div class="room__box scroll">
+                {% if room.description %}
+                <div class="room__header">
+                    <p>{{ room.description }}</p>
                     <hr>
                 </div>
-            {% endfor %}
+                {% endif %}
+
+                <div class="room__conversation">
+                    {% for message in room_messages %}
+                    <div class="room__message">
+                        <div class="room__messageHeader">
+                            <a href="{% url 'user-profile' message.user.username %}" class="roomListRoom__author">
+                                <div class="avatar avatar--small">
+                                    <div class="avatar__initials" style="font-size:1rem;">{{ message.user.username|first|upper }}</div>
+                                </div>
+                                <span>@{{ message.user.username }}</span>
+                            </a>
+                            <small>hace {{ message.created|timesince }}</small>
+                            {% if request.user == message.user %}
+                            <a href="{% url 'delete-message' message.id %}" style="margin-left:auto;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-error)">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                </svg>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <p>{{ message.body }}</p>
+                        <hr>
+                    </div>
+                    {% empty %}
+                    <div style="text-align:center;padding:4rem 2rem;color:var(--color-gray);">
+                        <p style="font-size:1.6rem;">No hay mensajes aún</p>
+                        <p>Sé el primero en escribir</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
 
             {% if request.user.is_authenticated %}
-            <div class="comment-form">
+            <div class="room__bottom">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    <input type="text" name="body" placeholder="write your message here...">
+                    <div class="room__form">
+                        <input type="text" name="body" placeholder="Escribe tu mensaje aquí..." required />
+                        <button type="submit" class="btn btn--main">Enviar</button>
+                    </div>
                 </form>
             </div>
-            {% endif %} 
-            
-    </div>   
-    
-    <div>
-        <h3>Participants</h3>
-        <hr>
-        {% for user in participants %}
-            <div>
-                <p>@{{ user.username }}</p>
+            {% endif %}
 
+        </div>
+
+        <div class="participants">
+            <div class="participants__top">
+                <h3>Participantes ({{ participants.count }})</h3>
             </div>
-
-        {% endfor %}
+            <div class="participants__list scroll">
+                {% for user in participants %}
+                <div class="participant">
+                    <a href="{% url 'user-profile' user.username %}" class="roomListRoom__author">
+                        <div class="avatar avatar--small">
+                            <div class="avatar__initials" style="font-size:1rem;">{{ user.username|first|upper }}</div>
+                        </div>
+                        <span>@{{ user.username }}</span>
+                    </a>
+                </div>
+                {% empty %}
+                <p style="text-align:center;padding:2rem;color:var(--color-gray);">Sin participantes</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    
 </div>
-
-
 {% endblock %}
-

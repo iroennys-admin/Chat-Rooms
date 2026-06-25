@@ -1163,3 +1163,105 @@ a {
   color: var(--color-main);
   font-weight: 1.4rem;
 }
+
+/*========== Avatar initials ==========*/
+.avatar__initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-main);
+  color: var(--color-dark);
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+.avatar.avatar--small .avatar__initials {
+  font-size: 1.2rem;
+}
+
+.avatar.avatar--medium .avatar__initials {
+  font-size: 1.6rem;
+}
+
+/*========== Messages / Alerts ==========*/
+.messages {
+  margin: 2rem auto;
+}
+
+.alert {
+  padding: 1.2rem 2rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 1.4rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert--success {
+  background: #1b4332;
+  color: #95d5b2;
+  border: 1px solid #2d6a4f;
+}
+
+.alert--error {
+  background: #4a0e0e;
+  color: #f5a0a0;
+  border: 1px solid #8b1a1a;
+}
+
+.alert--info {
+  background: #0c3547;
+  color: #88d1f1;
+  border: 1px solid #1a6b8a;
+}
+
+.alert--warning {
+  background: #4a3d0e;
+  color: #f5e0a0;
+  border: 1px solid #8b7a1a;
+}
+
+/*========== Room bottom form ==========*/
+.room__bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 2rem;
+  background: var(--color-dark);
+  border-top: 1px solid var(--color-dark-medium);
+}
+
+.room__form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.room__form input {
+  flex: 1;
+  padding: 1.2rem 1.5rem;
+  background: var(--color-dark-medium);
+  border: 1px solid var(--color-dark-light);
+  border-radius: 8px;
+  color: var(--color-light);
+  font-size: 1.4rem;
+  outline: none;
+}
+
+.room__form input:focus {
+  border-color: var(--color-main);
+}
+
+/*========== Responsive ==========*/
+@media screen and (max-width: 900px) {
+  .room__bottom {
+    position: fixed;
+  }
+
+  .participants {
+    display: none;
+  }
+}

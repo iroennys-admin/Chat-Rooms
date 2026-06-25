@@ -1,23 +1,39 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <h1>Iniciar sesion</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Entrar</button>
-        </form>
-       
+{% extends 'main.html' %}
 
+{% block title %}Iniciar sesión · ChatRooms{% endblock %}
 
-    
-    </body>
-
-
-
-
-
-</html>
+{% block content %}
+<div class="auth layout">
+    <div class="container">
+        <div class="layout__box">
+            <div class="layout__boxHeader">
+                <div class="layout__boxTitle">
+                    <h3>Iniciar sesión</h3>
+                </div>
+            </div>
+            <div class="layout__body">
+                <form method="POST" class="form">
+                    {% csrf_token %}
+                    <div class="form__group">
+                        <label for="id_username">Nombre de usuario</label>
+                        <input type="text" name="username" id="id_username" placeholder="Ingresa tu usuario..." required />
+                    </div>
+                    <div class="form__group">
+                        <label for="id_password">Contraseña</label>
+                        <input type="password" name="password" id="id_password" placeholder="••••••••" required />
+                    </div>
+                    {% if form.errors %}
+                    <p style="color:var(--color-error);margin-bottom:1rem;">Usuario o contraseña incorrectos.</p>
+                    {% endif %}
+                    <div class="form__action" style="justify-content:center;">
+                        <button type="submit" class="btn btn--main">Entrar</button>
+                    </div>
+                </form>
+                <div class="auth__action">
+                    <p>¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

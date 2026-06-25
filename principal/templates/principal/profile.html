@@ -1,28 +1,96 @@
 {% extends 'main.html' %}
 
+{% block title %}{{ user.username }} · ChatRooms{% endblock %}
+
 {% block content %}
+<div class="profile-page layout layout--3">
+    <div class="container">
+        <div class="topics">
+            <div class="topics__header">
+                <h2>Información</h2>
+            </div>
+            <div class="profile">
+                <div class="profile__avatar">
+                    <div class="avatar avatar--large">
+                        <div class="avatar__initials" style="font-size:3rem;width:8rem;height:8rem;display:flex;align-items:center;justify-content:center;background:var(--color-main);color:var(--color-dark);border-radius:50%;">{{ user.username|first|upper }}</div>
+                    </div>
+                </div>
+                <div class="profile__info">
+                    <h3>{{ user.username }}</h3>
+                    <p>@{{ user.username }}</p>
+                    {% if user.email %}
+                    <p style="color:var(--color-light-gray);font-size:1.4rem;">📧 {{ user.email }}</p>
+                    {% endif %}
+                    <p style="color:var(--color-gray);font-size:1.3rem;">Miembro desde {{ user.date_joined|date:"d/m/Y" }}</p>
+                </div>
+            </div>
+            <ul class="topics__list" style="margin-top:2rem;">
+                <li><a>📊 {{ rooms.count }} sala{{ rooms.count|pluralize:"s" }}</a></li>
+                <li><a>💬 {{ user.message_set.count }} mensaje{{ user.message_set.count|pluralize:"s" }}</a></li>
+            </ul>
+        </div>
 
-<div class="profile">
-  <div class="profile__avatar">
-    <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-  </div>
-  <div class="profile__info">
-    <h2>{{ user.username }}</h2>
-    <p>@{{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Member since: {{ user.date_joined|date:"d/m/Y" }}</p>
-  </div>
-</div>
+        <div>
+            <div class="roomList__header">
+                <div>
+                    <h2>Salas de {{ user.username }}</h2>
+                </div>
+            </div>
+            {% for room in rooms %}
+            <div class="roomListRoom">
+                <div class="roomListRoom__header">
+                    <a href="{% url 'user-profile' room.host.username %}" class="roomListRoom__author">
+                        <div class="avatar avatar--small">
+                            <div class="avatar__initials" style="font-size:1rem;">{{ room.host.username|first|upper }}</div>
+                        </div>
+                        <span>@{{ room.host.username }}</span>
+                    </a>
+                </div>
+                <div class="roomListRoom__content">
+                    <a href="{% url 'room' room.id %}">{{ room.name }}</a>
+                    {% if room.description %}
+                    <p>{{ room.description|truncatewords:20 }}</p>
+                    {% endif %}
+                </div>
+                <div class="roomListRoom__meta">
+                    <span class="roomListRoom__topic">{{ room.topic.name }}</span>
+                    <div class="roomListRoom__joined">
+                        🧑 {{ room.participants.count }} miembro{{ room.participants.count|pluralize:"s" }}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="roomListRoom">
+                <div style="text-align:center;padding:4rem 2rem;">
+                    <p style="font-size:1.8rem;">{{ user.username }} no ha creado salas aún</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
-<div class="rooms">
-  <h3> {{ user.username }}/ Rooms</h3>
-  {% for room in rooms %}
-    <div class="room">
-      <a href="{% url 'room' room.id %}">{{ room.name }}</a>
+        <div class="activities">
+            <div class="activities__header">
+                <h2>Actividad reciente</h2>
+            </div>
+            {% for message in room_messages %}
+            <div class="activities__box">
+                <div class="activities__boxHeader">
+                    <p>
+                        <a href="{% url 'user-profile' message.user.username %}">@{{ message.user.username }}</a>
+                        <span>hace {{ message.created|timesince }}</span>
+                    </p>
+                </div>
+                <div class="activities__boxContent">
+                    <p>En "<a href="{% url 'room' message.room.id %}">{{ message.room.name }}</a>"</p>
+                    <div class="activities__boxRoomContent">{{ message.body|truncatewords:15 }}</div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="activities__box">
+                <p style="text-align:center;padding:2rem;">Sin actividad reciente</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-  {% endfor %}
 </div>
-
-
-
-{% endblock content %}
+{% endblock %}
